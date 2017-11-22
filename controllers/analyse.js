@@ -4,7 +4,6 @@ const intensifiers = require('./../data/intensifiers.json');
 
 module.exports = function analyse(input) {
   let score = 0;
-  // get individual words
   const words = input.split(' ');
   for (let i = 0; i < words.length; i++) {
     words[i] = words[i].toLowerCase();
@@ -24,7 +23,7 @@ module.exports = function analyse(input) {
       }
     }
   }
-  let comp = (score / words.length).toFixed(2);
+  let comp = Number((score / words.length).toFixed(2));
   // maybe it's a negative number divided by itself
   if (Object.is(comp, -0)) {
     comp = 0;
