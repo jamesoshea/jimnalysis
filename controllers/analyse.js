@@ -1,32 +1,34 @@
+const cleanUp = require('./cleanUp');
 const afinn = require('./../data/afinn.json');
 const negators = require('./../data/negators.json');
 const intensifiers = require('./../data/intensifiers.json');
 
 module.exports = function analyse(input) {
-  let score = 0;
-  const words = input.split(' ');
+  const cleanedInput = cleanUp(input);
+  let totalScore = 0;
+  const words = cleanedInput.split(' ');
   for (let i = 0; i < words.length; i++) {
+    let tempScore = 0;
     words[i] = words[i].toLowerCase();
     if (afinn.hasOwnProperty(words[i])) {
-      // allow for negated words
       if (negators.hasOwnProperty(words[i - 1])) {
-        // allow for intensifiers
-        if (intensifiers.hasOwnProperty(words[i - 2])) {
-          score -= (afinn[words[i]] * intensifiers[words[i - 1]]);
-        } else {
-          score -= afinn[words[i]];
-        }
-      } else if (intensifiers.hasOwnProperty(words[i - 1])) {
-        score += (afinn[words[i]] * intensifiers[words[i - 1]]);
+        tempScore -= afinn[words[i]];
       } else {
-        score += afinn[words[i]];
+        tempScore += afinn[words[i]];
+      }
+      if (intensifiers.hasOwnProperty(words[i - 1])) {
+        tempScore *= intensifiers[words[i - 1]];
+        if (negators.hasOwnProperty(words[i - 2])) {
+          tempScore *= -1;
+        }
       }
     }
+    totalScore += tempScore;
   }
-  let comp = Number((score / words.length).toFixed(2));
+  let comp = Number((totalScore / words.length).toFixed(2));
   // maybe it's a negative number divided by itself
   if (Object.is(comp, -0)) {
     comp = 0;
   }
-  return { score, comp };
+  return { score: totalScore, comp };
 };
