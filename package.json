@@ -1,7 +1,7 @@
 {
-  "name": "jim-package",
-  "version": "1.0.2",
-  "description": "My first package",
+  "name": "jimnalysis",
+  "version": "1.0.3",
+  "description": "A simple, dependency free, bag-of-words text analysis package with common sense heuristics",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
