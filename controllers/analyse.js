@@ -1,8 +1,8 @@
-const afinn = require('./data/afinn.json')
-const negators = require('./data/negators.json')
-const intensifiers = require('./data/intensifiers.json')
+const afinn = require('./../data/afinn.json')
+const negators = require('./../data/negators.json')
+const intensifiers = require('./../data/intensifiers.json')
 
-export default function(input) {
+module.exports = function(input) {
 	var score = 0;
 	var comp = 0;
 	// get individual words
